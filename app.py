@@ -611,6 +611,23 @@ def test_endpoint():
         }
     })
 
+@app.route('/', methods=['GET'])
+def root():
+    """根路径，用于测试服务是否运行"""
+    return jsonify({
+        "status": "running",
+        "message": "船舶可视化后端服务正在运行",
+        "version": "1.0.0",
+        "endpoints": {
+            "health": "/api/health",
+            "upload": "/api/upload",
+            "files": "/api/files",
+            "data": "/api/data/<filename>",
+            "test": "/api/test"
+        },
+        "timestamp": pd.Timestamp.now().isoformat()
+    })
+
 if __name__ == '__main__':
     # 从环境变量获取端口，默认为5000
     port = int(os.environ.get('PORT', 5000))
