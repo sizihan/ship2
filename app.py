@@ -22,7 +22,23 @@ logging.basicConfig(
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)  # 允许跨域请求
+
+# 配置 CORS，明确允许 Vercel 域名和其他来源
+CORS(app, resources={
+    r"/api/*": {
+        "origins": [
+            "https://ship-steel.vercel.app",
+            "https://*.vercel.app",
+            "http://localhost:3000",
+            "http://localhost:5173",
+            "http://127.0.0.1:3000",
+            "http://127.0.0.1:5173"
+        ],
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"],
+        "supports_credentials": False
+    }
+})
 
 # 配置文件上传 - 使用绝对路径避免相对路径问题
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
